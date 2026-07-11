@@ -1,4 +1,4 @@
-package com.example.csvimport
+package com.example.csvimport.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,13 +11,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.csvimport.ui.theme.CsvImportTheme
+import com.example.csvimport.presentation.ui.screen.SignupScreen
+import com.example.csvimport.presentation.ui.theme.CsvImportTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 /**
  * Agregar dependencias
- *  -actualizar dependencias. kotlin, compose, gradle
- *  -koin
- *  -firebase autenticacion
+ *  -actualizar dependencias. kotlin, compose, gradle+
+ *  -koin+
+ *  -firebase autenticacion +
  *  -navigation3
  *  -csv parser
  *  -ia connection
@@ -25,21 +28,26 @@ import com.example.csvimport.ui.theme.CsvImportTheme
  *  -limpiar dependencias(Catalogs, Toml versions)
  * */
 class MainActivity : ComponentActivity() {
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+
         enableEdgeToEdge()
         setContent {
             CsvImportTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                   SignupScreen(auth, db, modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
