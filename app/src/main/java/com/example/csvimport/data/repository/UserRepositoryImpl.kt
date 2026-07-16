@@ -1,4 +1,4 @@
-package com.example.csvimport.data
+package com.example.csvimport.data.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await

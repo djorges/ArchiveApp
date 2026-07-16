@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.csvimport.data.AuthRepository
-import com.example.csvimport.data.UserRepository
+import com.example.csvimport.data.repository.AuthRepository
+import com.example.csvimport.data.repository.UserRepository
 import com.example.csvimport.domain.AuthState
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow

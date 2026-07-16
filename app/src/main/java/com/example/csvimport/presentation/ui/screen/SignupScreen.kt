@@ -44,8 +44,6 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SignupScreen(
-    auth: FirebaseAuth,
-    db: FirebaseFirestore,
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = koinViewModel()
 ) {

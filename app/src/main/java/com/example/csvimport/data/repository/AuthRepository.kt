@@ -1,4 +1,4 @@
-package com.example.csvimport.data
+package com.example.csvimport.data.repository
 
 import com.example.csvimport.domain.AuthState
 import com.google.firebase.auth.FirebaseUser

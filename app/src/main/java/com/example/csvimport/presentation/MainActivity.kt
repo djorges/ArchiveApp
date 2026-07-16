@@ -16,32 +16,17 @@ import com.example.csvimport.presentation.ui.theme.CsvImportTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-/**
- * Agregar dependencias
- *  -actualizar dependencias. kotlin, compose, gradle+
- *  -koin+
- *  -firebase autenticacion +
- *  -navigation3
- *  -csv parser
- *  -ia connection
- *  -
- *  -limpiar dependencias(Catalogs, Toml versions)
- * */
+
 class MainActivity : ComponentActivity() {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
 
         enableEdgeToEdge()
         setContent {
             CsvImportTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   SignupScreen(auth, db, modifier = Modifier.padding(innerPadding))
+                   SignupScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
