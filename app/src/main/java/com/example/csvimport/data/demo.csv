@@ -1,0 +1,11 @@
+AddressID,AddressLine1,AddressLine2,City,StateProvince,CountryRegion,PostalCode,Rowguid,ModifiedDate
+1,742 Evergreen Terrace,,Springfield,Illinois,United States,62704,550e8400-e29b-41d4-a716-446655440001,2026-07-20T10:00:00
+2,221B Baker Street,,London,England,United Kingdom,NW16XE,550e8400-e29b-41d4-a716-446655440002,2026-07-20T10:05:00
+3,1600 Pennsylvania Ave NW,,Washington,District of Columbia,United States,20500,550e8400-e29b-41d4-a716-446655440003,2026-07-20T10:10:00
+4,Av. Corrientes 1234,Piso 5,Buenos Aires,CABA,Argentina,C1043AAZ,550e8400-e29b-41d4-a716-446655440004,2026-07-20T10:15:00
+5,Av. Colón 550,,Córdoba,Córdoba,Argentina,X5000ABC,550e8400-e29b-41d4-a716-446655440005,2026-07-20T10:20:00
+6,Calle San Martín 245,,Rosario,Santa Fe,Argentina,S2000DEF,550e8400-e29b-41d4-a716-446655440006,2026-07-20T10:25:00
+7,Rua Augusta 1500,Apto 302,São Paulo,São Paulo,Brazil,01305000,550e8400-e29b-41d4-a716-446655440007,2026-07-20T10:30:00
+8,Gran Vía 28,,Madrid,Madrid,Spain,28013,550e8400-e29b-41d4-a716-446655440008,2026-07-20T10:35:00
+9,Unter den Linden 15,,Berlin,Berlin,Germany,10117,550e8400-e29b-41d4-a716-446655440009,2026-07-20T10:40:00
+10,1 Infinite Loop,,Cupertino,California,United States,95014,550e8400-e29b-41d4-a716-446655440010,2026-07-20T10:45:00

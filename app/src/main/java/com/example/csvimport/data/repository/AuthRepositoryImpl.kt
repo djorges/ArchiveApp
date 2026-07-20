@@ -1,6 +1,6 @@
 package com.example.csvimport.data.repository
 
-import com.example.csvimport.domain.AuthState
+import com.example.csvimport.domain.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
@@ -15,11 +15,11 @@ class AuthRepositoryImpl(
     override suspend fun login(
         email: String,
         password: String
-    ): AuthState<FirebaseUser> = try {
+    ): UiState<FirebaseUser> = try {
         val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-        AuthState.Success(result.user!!)
+        UiState.Success(result.user!!)
     } catch (e: Exception) {
-        AuthState.Failure(e)
+        UiState.Failure(e)
     }
 
 
@@ -27,12 +27,12 @@ class AuthRepositoryImpl(
         name: String,
         email: String,
         password: String
-    ): AuthState<FirebaseUser> = try {
+    ): UiState<FirebaseUser> = try {
         val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
 
-        AuthState.Success(result.user!!)
+        UiState.Success(result.user!!)
     } catch (e: Exception) {
-        AuthState.Failure(e)
+        UiState.Failure(e)
     }
 
 

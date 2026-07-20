@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.csvimport.data.repository.AuthRepository
 import com.example.csvimport.data.repository.UserRepository
-import com.example.csvimport.domain.AuthState
+import com.example.csvimport.domain.UiState
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,31 +20,35 @@ class MainViewModel(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository
 ): ViewModel() {
-    private val _signupState = MutableStateFlow<AuthState<FirebaseUser>>(AuthState.Initial)
-    val signupState: StateFlow<AuthState<FirebaseUser>> = _signupState.asStateFlow()
+    private val _signupState = MutableStateFlow<UiState<FirebaseUser>>(UiState.Initial)
+    val signupState: StateFlow<UiState<FirebaseUser>> = _signupState.asStateFlow()
 
-    var name by mutableStateOf("")
-        private set
-    var email by mutableStateOf("")
-        private set
-    var password by mutableStateOf("")
-        private set
+    // Estados usando StateFlow
+    private val _name = MutableStateFlow("")
+    val name: StateFlow<String> = _name.asStateFlow()
 
-    fun onEmailChange(newValue: String) { email = newValue }
-    fun onPasswordChange(newValue: String) { password = newValue }
+    private val _email = MutableStateFlow("")
+    val email: StateFlow<String> = _email.asStateFlow()
 
-    fun onNameChange(newValue: String) { name = newValue }
+    private val _password = MutableStateFlow("")
+    val password: StateFlow<String> = _password.asStateFlow()
+
+    fun onEmailChange(newValue: String) { _email.value = newValue }
+    fun onPasswordChange(newValue: String) { _password.value = newValue }
+    fun onNameChange(newValue: String) { _name.value = newValue }
 
     fun signupUser() {
         viewModelScope.launch {
-            _signupState.value = AuthState.Loading
+            _signupState.value = UiState.Loading
 
-            if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+            val currentName = _name.value
+            val currentEmail = _email.value
+            val currentPassword = _password.value
 
-                val result = authRepository.signup(name,email, password)
-
-                if (result is AuthState.Success) {
-                    userRepository.createUser(result.data.uid, name)
+            if (currentName.isNotEmpty() && currentEmail.isNotEmpty() && currentPassword.isNotEmpty()) {
+                val result = authRepository.signup(currentName, currentEmail, currentPassword)
+                if (result is UiState.Success) {
+                    userRepository.createUser(result.data.uid, currentName)
                 }
                 _signupState.value = result
             }

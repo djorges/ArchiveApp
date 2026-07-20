@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.csvimport.presentation.ui.screen.AddressScreen
 import com.example.csvimport.presentation.ui.screen.SignupScreen
 import com.example.csvimport.presentation.ui.theme.CsvImportTheme
 import com.google.firebase.auth.FirebaseAuth
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CsvImportTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   SignupScreen(modifier = Modifier.padding(innerPadding))
+                    AddressScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
