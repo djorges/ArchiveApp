@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.csvimport.R
@@ -43,7 +44,6 @@ fun AddressContent(
     onDismissEditDialog: () -> Unit = {},
     onSaveAddress: AddressEntity.(String, String) -> Unit = { _, _ -> }
 ) {
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(snackbarHostState)
@@ -107,16 +107,6 @@ fun AddressContent(
 }
 
 @Composable
-fun EditAddressDialog(
-    initialCity: String,
-    initialState: String,
-    onDismiss: () -> Unit,
-    onSave: AddressEntity.(String, String) -> Unit
-) {
-    TODO("Not yet implemented")
-}
-
-@Composable
 fun AddressRow(
     modifier: Modifier = Modifier,
     address: AddressEntity,
@@ -150,9 +140,43 @@ fun AddressRow(
 
                 Spacer(modifier = Modifier.height(6.dp))
 
+                Row{
+                    Text(text = "City: ", style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold))
+                    Text(text = address.city, style = MaterialTheme.typography.bodySmall)
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(text = "State: ", style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold))
+                    Text(text = address.stateProvince, style = MaterialTheme.typography.bodySmall)
+                }
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Row{
+                    Text(text = "Country: ${address.countryRegion}", style = MaterialTheme.typography.bodySmall)
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(text = "Postal Code: ${address.postalCode}", style = MaterialTheme.typography.bodySmall)
+                    Text(text = "Modified: ${address.modifiedDate}", style = MaterialTheme.typography.bodySmall)
+                }
+
+            }
+
+            Button(onClick = { onEdit(address) }) {
+                Text(text = "Edit")
             }
         }
     }
+}
+
+
+@Composable
+fun EditAddressDialog(
+    initialCity: String,
+    initialState: String,
+    onDismiss: () -> Unit,
+    onSave: AddressEntity.(String, String) -> Unit
+) {
+    TODO("Not yet implemented")
 }
 
 @Preview(showBackground = true)

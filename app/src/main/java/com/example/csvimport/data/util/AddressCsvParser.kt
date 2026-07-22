@@ -8,6 +8,8 @@ import java.io.InputStreamReader
 
 @Singleton
 class AddressCsvParser {
+    //TODO: unparse method
+
     fun parse(input: InputStream): List<AddressEntity>{
         //
         val reader = InputStreamReader(input, Charsets.UTF_8)
