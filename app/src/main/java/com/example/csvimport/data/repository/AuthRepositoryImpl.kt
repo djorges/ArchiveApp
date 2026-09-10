@@ -6,6 +6,14 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 import org.koin.core.annotation.Singleton
 
+
+/**
+ * TODO:
+ * -forgotpassword
+ * -signup facebook, google
+ * -signin facebook, google
+ *
+ * */
 @Singleton(binds = [AuthRepository::class])
 class AuthRepositoryImpl(
     private val firebaseAuth: FirebaseAuth

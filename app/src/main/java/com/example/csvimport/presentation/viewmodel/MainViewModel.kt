@@ -27,6 +27,13 @@ class MainViewModel(
     private val _name = MutableStateFlow("")
     val name: StateFlow<String> = _name.asStateFlow()
 
+
+    private val _loginState =
+        MutableStateFlow<UiState<FirebaseUser>>(UiState.Initial)
+
+    val loginState: StateFlow<UiState<FirebaseUser>> =
+        _loginState.asStateFlow()
+
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email.asStateFlow()
 
@@ -54,4 +61,26 @@ class MainViewModel(
             }
         }
     }
+
+    fun loginUser() {
+        viewModelScope.launch {
+            _loginState.value = UiState.Loading
+
+            val currentEmail = _email.value
+            val currentPassword = _password.value
+
+            if (
+                currentEmail.isNotEmpty() &&
+                currentPassword.isNotEmpty()
+            ) {
+                val result = authRepository.login(
+                    currentEmail,
+                    currentPassword
+                )
+
+                _loginState.value = result
+            }
+        }
+    }
+
 }

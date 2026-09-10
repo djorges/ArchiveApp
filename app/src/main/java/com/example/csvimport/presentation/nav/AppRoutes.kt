@@ -7,11 +7,15 @@ import kotlinx.serialization.Serializable
 sealed interface AppRoutes: NavKey{
 
     @Serializable
-    data object Login: AppRoutes{
+    data object Signin: AppRoutes{
     }
 
     @Serializable
     data object Signup: AppRoutes{
+    }
+
+    @Serializable
+    data object Dashboard: AppRoutes{
     }
 
     @Serializable

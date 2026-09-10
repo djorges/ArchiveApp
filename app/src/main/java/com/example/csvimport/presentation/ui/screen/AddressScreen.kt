@@ -25,13 +25,14 @@ private val csvMimeTypes = arrayOf(
 @Composable
 fun AddressScreen(
     modifier: Modifier = Modifier,
-    viewModel: AddressViewModel = koinViewModel()
+    viewModel: AddressViewModel = koinViewModel(),
+    onAddressClick: (Int) -> Unit
 ){
     val addresses by viewModel.addresses.collectAsStateWithLifecycle()
     val selectedAddress by viewModel.selectedAddress.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState()}
-
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.uiMessage.collect { message ->
@@ -69,7 +70,9 @@ fun AddressScreen(
         },
         onSaveAddress = { newCity, newState ->
             viewModel.saveCityState(this.addressId, newCity.trim(), newState.trim())
-        }
+        },
+        searchText = searchText,
+        onSearchChange = viewModel::onSearchTextChange,
     )
 }
 

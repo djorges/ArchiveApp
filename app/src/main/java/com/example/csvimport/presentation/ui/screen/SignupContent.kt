@@ -16,6 +16,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.contentType
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -38,6 +40,11 @@ import com.example.csvimport.R
 import com.example.csvimport.domain.UiState
 import com.google.firebase.auth.FirebaseUser
 
+/**
+ * TODO:
+ * - add stich design.
+ * - set signinb button
+ * */
 @Composable
 fun SignupContent(
     modifier: Modifier = Modifier,
@@ -48,7 +55,8 @@ fun SignupContent(
     onNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onSignup: () -> Unit
+    onSignup: () -> Unit = {},
+    onSignin: () -> Unit = {}
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
@@ -123,15 +131,25 @@ fun SignupContent(
             }
         )
 
+        Spacer(Modifier.height(16.dp))
+
         Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
+            modifier = Modifier.fillMaxWidth(),
             onClick = onSignup,
             enabled = signupState !is UiState.Loading,
             shape = RoundedCornerShape(8.dp)
         ) {
             Text("Create account")
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        OutlinedButton (
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onSignin,
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text("Sign In")
         }
 
         Spacer(Modifier.height(24.dp))
@@ -142,11 +160,12 @@ fun SignupContent(
 
             is UiState.Success ->
                 Text(
-                    text = "Signed up successfully",
+                    text = "Signed up successfully. Go to Login screen",
                     color = MaterialTheme.colorScheme.primary
                 )
 
             is UiState.Failure ->
+                //Show error message
                 Text(
                     text = "Error signing up",
                     color = MaterialTheme.colorScheme.error
