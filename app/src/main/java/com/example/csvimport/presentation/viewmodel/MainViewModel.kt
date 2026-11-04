@@ -15,72 +15,136 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.KoinViewModel
 
+
 @KoinViewModel
 class MainViewModel(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository
-): ViewModel() {
-    private val _signupState = MutableStateFlow<UiState<FirebaseUser>>(UiState.Initial)
-    val signupState: StateFlow<UiState<FirebaseUser>> = _signupState.asStateFlow()
+) : ViewModel() {
 
-    // Estados usando StateFlow
+    // Formulario
     private val _name = MutableStateFlow("")
-    val name: StateFlow<String> = _name.asStateFlow()
+    val name = _name.asStateFlow()
 
+    private val _email = MutableStateFlow("")
+    val email = _email.asStateFlow()
+
+    private val _password = MutableStateFlow("")
+    val password = _password.asStateFlow()
+
+    // Estados de autenticación
+    private val _signupState =
+        MutableStateFlow<UiState<FirebaseUser>>(UiState.Initial)
+    val signupState = _signupState.asStateFlow()
 
     private val _loginState =
         MutableStateFlow<UiState<FirebaseUser>>(UiState.Initial)
+    val loginState = _loginState.asStateFlow()
 
-    val loginState: StateFlow<UiState<FirebaseUser>> =
-        _loginState.asStateFlow()
+    // Actualización de campos
+    fun onNameChange(value: String) {
+        _name.value = value
+    }
 
-    private val _email = MutableStateFlow("")
-    val email: StateFlow<String> = _email.asStateFlow()
+    fun onEmailChange(value: String) {
+        _email.value = value
+    }
 
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
+    fun onPasswordChange(value: String) {
+        _password.value = value
+    }
 
-    fun onEmailChange(newValue: String) { _email.value = newValue }
-    fun onPasswordChange(newValue: String) { _password.value = newValue }
-    fun onNameChange(newValue: String) { _name.value = newValue }
+    // Registro
+    fun signUp() {
+        val currentName = _name.value.trim()
+        val currentEmail = _email.value.trim()
+        val currentPassword = _password.value
 
-    fun signupUser() {
+        if (!validateSignUp(currentName, currentEmail, currentPassword)) {
+            return
+        }
+
         viewModelScope.launch {
             _signupState.value = UiState.Loading
 
-            val currentName = _name.value
-            val currentEmail = _email.value
-            val currentPassword = _password.value
-
-            if (currentName.isNotEmpty() && currentEmail.isNotEmpty() && currentPassword.isNotEmpty()) {
-                val result = authRepository.signup(currentName, currentEmail, currentPassword)
-                if (result is UiState.Success) {
-                    userRepository.createUser(result.data.uid, currentName)
-                }
-                _signupState.value = result
-            }
-        }
-    }
-
-    fun loginUser() {
-        viewModelScope.launch {
-            _loginState.value = UiState.Loading
-
-            val currentEmail = _email.value
-            val currentPassword = _password.value
-
-            if (
-                currentEmail.isNotEmpty() &&
-                currentPassword.isNotEmpty()
-            ) {
-                val result = authRepository.login(
+            try {
+                val result = authRepository.signup(
+                    currentName,
                     currentEmail,
                     currentPassword
                 )
 
-                _loginState.value = result
+                if (result is UiState.Success) {
+                    userRepository.createUser(
+                        result.data.uid,
+                        currentName
+                    )
+                }
+
+                _signupState.value = result
+
+            } catch (e: Exception) {
+                // Adaptar al tipo de error de tu UiState
+                _signupState.value = UiState.Error(
+                    e.message ?: "Error al registrarse"
+                )
             }
         }
     }
 
+    // Login
+    fun login() {
+        val currentEmail = _email.value.trim()
+        val currentPassword = _password.value
+
+        if (!validateLogin(currentEmail, currentPassword)) {
+            return
+        }
+
+        viewModelScope.launch {
+            _loginState.value = UiState.Loading
+
+            try {
+                _loginState.value = authRepository.login(
+                    currentEmail,
+                    currentPassword
+                )
+
+            } catch (e: Exception) {
+                _loginState.value = UiState.Error(
+                    e.message ?: "Error al iniciar sesión"
+                )
+            }
+        }
+    }
+
+    // Validaciones
+    private fun validateSignUp(
+        name: String,
+        email: String,
+        password: String
+    ): Boolean {
+        if (name.isBlank() || email.isBlank() || password.isBlank()) {
+            _signupState.value = UiState.Error(
+                "Todos los campos son obligatorios"
+            )
+            return false
+        }
+
+        return true
+    }
+
+    private fun validateLogin(
+        email: String,
+        password: String
+    ): Boolean {
+        if (email.isBlank() || password.isBlank()) {
+            _loginState.value = UiState.Error(
+                "Email y contraseña son obligatorios"
+            )
+            return false
+        }
+
+        return true
+    }
 }
