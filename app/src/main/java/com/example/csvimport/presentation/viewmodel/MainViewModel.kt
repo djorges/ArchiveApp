@@ -15,6 +15,63 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.KoinViewModel
 
+/**
+ *
+ *
+ *
+ *
+ * */
+/*
+data class LoginUiState(
+    val email: String = "",
+    val password: String = "",
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    val loginSuccess: Boolean = false
+)
+
+
+data class SignupUiState(
+    val email: String = "",
+    val password: String = "",
+    val confirmPassword: String = "",
+    val isLoading: Boolean = false,
+    val error: String? = null,
+    val signupSuccess: Boolean = false
+)
+
+@KoinViewModel
+class LoginViewModel(
+    private val authRepository: AuthRepository
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState = _uiState.asStateFlow()
+
+    fun onEmailChange(email: String) {
+        _uiState.update {
+            it.copy(email = email)
+        }
+    }
+
+    fun onPasswordChange(password: String) {
+        _uiState.update {
+            it.copy(password = password)
+        }
+    }
+
+    fun login() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isLoading = true, error = null)
+            }
+
+            // login...
+        }
+    }
+}
+
+*/
 @KoinViewModel
 class MainViewModel(
     private val authRepository: AuthRepository,
@@ -23,16 +80,15 @@ class MainViewModel(
     private val _signupState = MutableStateFlow<UiState<FirebaseUser>>(UiState.Initial)
     val signupState: StateFlow<UiState<FirebaseUser>> = _signupState.asStateFlow()
 
-    // Estados usando StateFlow
+    private val _loginState = MutableStateFlow<UiState<FirebaseUser>>(UiState.Initial)
+
+    val loginState: StateFlow<UiState<FirebaseUser>> = _loginState.asStateFlow()
+
+    private val _forgotPasswordState = MutableStateFlow<UiState<String>>(UiState.Initial)
+    val forgotPasswordState: StateFlow<UiState<String>> = _forgotPasswordState.asStateFlow()
+
     private val _name = MutableStateFlow("")
     val name: StateFlow<String> = _name.asStateFlow()
-
-
-    private val _loginState =
-        MutableStateFlow<UiState<FirebaseUser>>(UiState.Initial)
-
-    val loginState: StateFlow<UiState<FirebaseUser>> =
-        _loginState.asStateFlow()
 
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email.asStateFlow()
@@ -82,5 +138,26 @@ class MainViewModel(
             }
         }
     }
+
+    fun forgotPassword() {
+        viewModelScope.launch {
+            _forgotPasswordState.value = UiState.Loading
+
+            val currentEmail = _email.value
+
+            if (currentEmail.isNotEmpty()) {
+                val result = authRepository.forgotPassword(currentEmail)
+
+                _forgotPasswordState.value = result
+            }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+        }
+    }
+
 
 }

@@ -29,6 +29,6 @@ fun SignupScreen(
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
         onSignup = viewModel::signupUser,
-        onSignin = onSignin
+        onNavigateSignin = onSignin
     )
 }

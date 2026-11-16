@@ -55,7 +55,9 @@ fun NavigationHost(
                 SigninScreen(
                     onLoginSuccess = { backStack.add(AppRoutes.AddressList) },
                     onSignUp = { backStack.add(AppRoutes.Signup) },
-                    onForgotPassword = {}
+                    onForgotPassword = {},
+                    onGoogleSignIn = {},
+                    onFacebookSignIn = {}
                 )
             }
         }

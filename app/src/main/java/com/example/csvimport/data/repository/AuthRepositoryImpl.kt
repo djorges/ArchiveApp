@@ -9,7 +9,7 @@ import org.koin.core.annotation.Singleton
 
 /**
  * TODO:
- * -forgotpassword
+ * -forgotpassword +++++++++
  * -signup facebook, google
  * -signin facebook, google
  *
@@ -43,6 +43,14 @@ class AuthRepositoryImpl(
         UiState.Failure(e)
     }
 
+    override suspend fun forgotPassword(
+        email: String
+    ): UiState<String> = try {
+        firebaseAuth.sendPasswordResetEmail(email).await()
+        UiState.Success("Password reset email sent")
+    } catch (e: Exception) {
+        UiState.Failure(e)
+    }
 
     override fun logout() {
         firebaseAuth.signOut()

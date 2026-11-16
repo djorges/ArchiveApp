@@ -1,5 +1,6 @@
 package com.example.csvimport.presentation.ui.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -68,7 +70,9 @@ fun SigninScreen(
     viewModel: MainViewModel = koinViewModel(),
     onLoginSuccess: () -> Unit,
     onSignUp: () -> Unit,
-    onForgotPassword: () -> Unit
+    onForgotPassword: () -> Unit,
+    onGoogleSignIn: () -> Unit,
+    onFacebookSignIn: () -> Unit
 ) {
     val email by viewModel.email.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
@@ -106,8 +110,8 @@ fun SigninScreen(
         onPasswordChange = viewModel::onPasswordChange,
         onSignIn = viewModel::loginUser,
         onForgotPassword = onForgotPassword,
-        onGoogleSignIn = { },
-        onFacebookSignIn = { },
+        onGoogleSignIn = onGoogleSignIn,
+        onFacebookSignIn = onFacebookSignIn,
         onLoginSuccess = onLoginSuccess,
         onSignUp = onSignUp
     )
@@ -170,12 +174,11 @@ fun SigninContent(
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(
+                        Image(
                             painter = painterResource(
                                 R.drawable.csv_master_icon
                             ),
                             contentDescription = "CSV Master",
-                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
 
@@ -352,12 +355,12 @@ fun SigninContent(
                             .height(36.dp),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Icon(
+                        Image(
                             painter = painterResource(
                                 R.drawable.google_logo
                             ),
                             contentDescription = "Google",
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(20.dp)
                         )
 
                         Spacer(modifier = Modifier.width(8.dp))
@@ -376,7 +379,7 @@ fun SigninContent(
                             .height(36.dp),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Icon(
+                        Image(
                             painter = painterResource(
                                 R.drawable.facebook_logo
                             ),
@@ -419,7 +422,7 @@ fun SigninContent(
     showBackground = true,
 )
 @Composable
-private fun SigninPreview() {
+private fun SigninContentPreview() {
     CsvImportTheme {
         SigninContent(
             email = "",

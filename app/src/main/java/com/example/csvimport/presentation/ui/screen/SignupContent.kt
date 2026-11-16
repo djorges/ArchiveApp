@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,14 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.contentType
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -56,9 +51,13 @@ fun SignupContent(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSignup: () -> Unit = {},
-    onSignin: () -> Unit = {}
+    onNavigateSignin: () -> Unit = {},
+    onGoogleSignUp: () -> Unit = {},
+    onFacebookSignUp: () -> Unit = {}
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var confirmPassword by rememberSaveable { mutableStateOf("") }
+    var confirmPasswordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -146,7 +145,7 @@ fun SignupContent(
 
         OutlinedButton (
             modifier = Modifier.fillMaxWidth(),
-            onClick = onSignin,
+            onClick = onNavigateSignin,
             shape = RoundedCornerShape(8.dp)
         ) {
             Text("Sign In")
