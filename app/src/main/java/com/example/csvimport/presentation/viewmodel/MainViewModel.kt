@@ -8,12 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.csvimport.data.repository.AuthRepository
 import com.example.csvimport.data.repository.UserRepository
 import com.example.csvimport.domain.UiState
+import com.example.csvimport.domain.User
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.KoinViewModel
+import kotlin.String
 
 
 @KoinViewModel
@@ -58,7 +60,7 @@ class MainViewModel(
     }
 
     // Registro
-    fun signUp() {
+    fun signupUser() {
         val currentName = _name.value.trim()
         val currentEmail = _email.value.trim()
         val currentPassword = _password.value
@@ -79,8 +81,11 @@ class MainViewModel(
 
                 if (result is UiState.Success) {
                     userRepository.createUser(
-                        result.data.uid,
-                        currentName
+                        User(
+                            uid = result.data.uid,
+                            name = currentName,
+                            role = "USER"
+                        )
                     )
                 }
 
@@ -88,7 +93,7 @@ class MainViewModel(
 
             } catch (e: Exception) {
                 // Adaptar al tipo de error de tu UiState
-                _signupState.value = UiState.Error(
+                _signupState.value = UiState.Failure(
                     e.message ?: "Error al registrarse"
                 )
             }
@@ -96,7 +101,7 @@ class MainViewModel(
     }
 
     // Login
-    fun login() {
+    fun loginUser() {
         val currentEmail = _email.value.trim()
         val currentPassword = _password.value
 
@@ -114,7 +119,7 @@ class MainViewModel(
                 )
 
             } catch (e: Exception) {
-                _loginState.value = UiState.Error(
+                _loginState.value = UiState.Failure(
                     e.message ?: "Error al iniciar sesión"
                 )
             }
@@ -128,7 +133,7 @@ class MainViewModel(
         password: String
     ): Boolean {
         if (name.isBlank() || email.isBlank() || password.isBlank()) {
-            _signupState.value = UiState.Error(
+            _signupState.value = UiState.Failure(
                 "Todos los campos son obligatorios"
             )
             return false
@@ -142,7 +147,7 @@ class MainViewModel(
         password: String
     ): Boolean {
         if (email.isBlank() || password.isBlank()) {
-            _loginState.value = UiState.Error(
+            _loginState.value = UiState.Failure(
                 "Email y contraseña son obligatorios"
             )
             return false

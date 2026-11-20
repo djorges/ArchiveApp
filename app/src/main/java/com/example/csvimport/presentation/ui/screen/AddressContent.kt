@@ -54,11 +54,6 @@ private val AccentContainer = Color(0xFFFFF1EF)
 private val ScreenBackground = Color(0xFFF7F7F9)
 private val Subtitle = Color(0xFF808080)
 
-/**
- * TODO:
- * -sacar colores al tema
- * -
- * */
 @Composable
 fun AddressContent(
     snackbarHostState: SnackbarHostState,
@@ -66,7 +61,6 @@ fun AddressContent(
     onSearchChange: (String) -> Unit,
     addresses: List<AddressEntity>,
     selectedAddress: AddressEntity? = null,
-    onImportCsv: () -> Unit,
     onEditAddress: (AddressEntity) -> Unit = {},
     onDismissEditDialog: () -> Unit = {},
     onSaveAddress: AddressEntity.(String, String) -> Unit = { _, _ -> }
@@ -78,7 +72,7 @@ fun AddressContent(
             SnackbarHost(snackbarHostState)
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
+            /*ExtendedFloatingActionButton(
                 onClick = onImportCsv,
                 containerColor = Accent,
                 contentColor = Color.White,
@@ -91,7 +85,7 @@ fun AddressContent(
                 text = {
                     Text("Import CSV")
                 }
-            )
+            )*/
         }
     ) { padding ->
 
@@ -378,7 +372,6 @@ private fun AddressContentPreview() {
             searchText = "",
             onSearchChange = {},
             selectedAddress = null,
-            onImportCsv = {},
             onEditAddress = {},
             onDismissEditDialog = {},
             onSaveAddress = { _, _ -> }

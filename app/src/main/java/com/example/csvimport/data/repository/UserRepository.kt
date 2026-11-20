@@ -1,5 +1,8 @@
 package com.example.csvimport.data.repository
 
+import com.example.csvimport.domain.User
+
+
 interface UserRepository {
 
     suspend fun createUser(user: User): Result<Unit>

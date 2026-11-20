@@ -3,6 +3,7 @@ package com.example.csvimport.data.repository
 import com.example.csvimport.domain.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.tasks.await
 import org.koin.core.annotation.Singleton
 
@@ -59,9 +60,9 @@ class AuthRepositoryImpl(
         val user = action()
             ?: throw IllegalStateException("Firebase user is null")
 
-        UiState.Success(result.user!!)
+        UiState.Success(user)
     } catch (e: Exception) {
-        UiState.Failure(e)
+        UiState.Failure(e.message ?: "Error al autenticar")
     }
 
     override suspend fun forgotPassword(
@@ -70,11 +71,6 @@ class AuthRepositoryImpl(
         firebaseAuth.sendPasswordResetEmail(email).await()
         UiState.Success("Password reset email sent")
     } catch (e: Exception) {
-        UiState.Failure(e)
+        UiState.Failure(e.message ?: "Error al cambiar contraseña")
     }
-
-    override fun logout() {
-        firebaseAuth.signOut()
-    }
-
 }

@@ -5,5 +5,5 @@ sealed class UiState<out T> {
     object Initial : UiState<Nothing>()
 
     data class Success<out T>(val data: T) : UiState<T>()
-    data class Failure(val exception: Exception) : UiState<Nothing>()
+    data class Failure(val message:String) : UiState<Nothing>()
 }

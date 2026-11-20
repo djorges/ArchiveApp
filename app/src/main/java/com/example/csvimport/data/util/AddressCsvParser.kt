@@ -2,9 +2,9 @@ package com.example.csvimport.data.util
 
 import com.example.csvimport.data.db.AddressEntity
 import org.apache.commons.csv.CSVFormat
+import org.apache.commons.csv.CSVRecord
 import org.koin.core.annotation.Singleton
 import java.io.InputStream
-import java.io.InputStreamReader
 
 @Singleton
 class AddressCsvParser {

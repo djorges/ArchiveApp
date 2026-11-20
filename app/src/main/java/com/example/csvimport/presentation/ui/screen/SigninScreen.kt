@@ -91,7 +91,7 @@ fun SigninScreen(
         is UiState.Failure ->
             //Show error message
             Text(
-                text = "Error signing up",
+                text = "Error signing in",
                 color = MaterialTheme.colorScheme.error
             )
         else -> Unit
@@ -102,7 +102,7 @@ fun SigninScreen(
         password = password,
         isLoading = loginState is UiState.Loading,
         errorMessage = if (loginState is UiState.Failure) {
-            (loginState as UiState.Failure).exception.message
+            "Error signing in"
         } else {
             null
         },

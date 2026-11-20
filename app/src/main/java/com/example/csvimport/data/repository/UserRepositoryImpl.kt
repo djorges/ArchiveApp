@@ -1,8 +1,10 @@
 package com.example.csvimport.data.repository
 
+import com.example.csvimport.domain.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import org.koin.core.annotation.Singleton
+import kotlin.coroutines.cancellation.CancellationException
 
 @Singleton(binds = [UserRepository::class])
 class UserRepositoryImpl(
